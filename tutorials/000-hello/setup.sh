@@ -20,3 +20,8 @@ sudo dnf install -y wget llvm clang fuse3
     sudo mv ecc-aarch64 /usr/local/bin/ecc && \
     sudo mv ecli-aarch64 /usr/local/bin/ecli
 )
+
+# Install Rust.
+# See https://rust-lang.org/tools/install/
+# The -s -- part tells sh that everything after it should be passed as arguments to the script.
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
