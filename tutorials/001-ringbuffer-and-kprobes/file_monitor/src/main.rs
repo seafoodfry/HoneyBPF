@@ -16,7 +16,7 @@ struct Event {
     pid: u32,
     comm: [u8; 16],
     filename: [u8; 256],
-    ret: i64,
+    ret: i32,
 }
 
 impl Default for Event {
@@ -43,7 +43,10 @@ fn handle_event(data: &[u8]) -> i32 {
         .unwrap_or("?")
         .trim_end_matches(char::from(0));
 
-    println!("PID: {}, CMD: {}, FILE: {}", event.pid, comm, filename);
+    println!(
+        "PID: {:6}, CMD: {:12}, RET: {:3}, FILE: {}",
+        event.pid, comm, event.ret, filename
+    );
     0
 }
 
@@ -55,6 +58,8 @@ fn main() -> Result<()> {
     skel.attach()?;
 
     println!("Monitoring file deletions... Press Ctrl+C to exit");
+    println!("{:6} {:12} {:3} {}", "PID", "CMD", "RET", "FILE");
+    println!("{:-<6} {:-<12} {:-<3} {:-<50}", "", "", "", "");
 
     let mut builder = RingBufferBuilder::new();
     builder.add(&skel.maps.events, handle_event)?;
