@@ -8,7 +8,9 @@ set -x
 # into one file. You download it, make it executable, and run it without installing anything.
 # AppImages use FUSE under the hood to mount themselves as a temporary filesystem when you run them,
 # which is why ecc needs FUSE installed. The AppImage mounts itself, runs the program inside, then unmounts when done.
-sudo dnf install -y wget llvm clang fuse3
+#
+# bpftool is used to create vmlinux.h files from the kernel's BTF data.
+sudo dnf install -y wget llvm clang fuse3 bpftool
 
 (
     cd /tmp && \
