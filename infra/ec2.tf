@@ -1,3 +1,4 @@
+# ./run-cmd-in-shell.sh aws ec2 describe-images --region us-east-1 --owners amazon --filters "Name=name,Values=amazon-eks-node-al2023-arm64-standard*" "Name=creation-date,Values=2025-11-*" > machines.json
 data "aws_ami" "ami" {
   most_recent = true
   owners      = ["amazon"]
@@ -16,7 +17,7 @@ resource "aws_instance" "ec2" {
     }
   }
 
-  ami           = data.aws_ami.ami.id
+  ami           = "ami-0bb01d9f69eb5fa9f" #data.aws_ami.ami.id
   instance_type = "t4g.small"
   key_name      = var.ec2_key_pair
 
