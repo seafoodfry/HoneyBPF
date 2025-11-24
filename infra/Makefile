@@ -9,18 +9,18 @@ help:  ## Display this help message
 .PHONY: all
 all:  ## Run Terraform plan
 	terraform fmt
-	./run-cmd-in-shell.sh terraform init
-	./run-cmd-in-shell.sh terraform plan -out a.plan
-	echo "./run-cmd-in-shell.sh terraform apply a.plan"
+	terraform init
+	terraform plan -out a.plan
+	echo "terraform apply a.plan"
 
 ##@ Local Development.
 .PHONY: instance_id
 instance_id:  ## Get EC2 instance ID
-	echo "export INSTANCE_ID=$$(./run-cmd-in-shell.sh terraform output -raw instance_id)"
+	echo "export INSTANCE_ID=$$(terraform output -raw instance_id)"
 
 .PHONY: ssh
 ssh:  # Create SSH tunnel with SSM
-	./run-cmd-in-shell.sh aws ssm start-session --region us-east-1 \
+	aws ssm start-session --region us-east-1 \
     --target ${INSTANCE_ID} \
     --document-name AWS-StartSSHSession \
     --parameters portNumber=22
@@ -32,7 +32,7 @@ sync:  ## Sync source code to EC2 via rsync
 ##@ Infra Cleanup.
 .PHONY: destroy
 destroy:  ## Destroy the infras
-	./run-cmd-in-shell.sh terraform destroy
+	terraform destroy
 
 .PHONY: clean
 clean:  ## Delete Terraform artifacts

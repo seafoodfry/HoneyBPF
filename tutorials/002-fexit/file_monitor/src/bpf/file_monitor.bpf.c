@@ -32,8 +32,9 @@ int BPF_PROG(do_unlinkat_exit, int dfd, struct filename *name, long ret)
 
     bpf_get_current_comm(&e->comm, sizeof(e->comm));
 
-    const char *fname = BPF_CORE_READ(name, name);
-    bpf_probe_read_kernel(&e->filename, sizeof(e->filename), fname);
+    //const char *fname = BPF_CORE_READ(name, name);
+    //bpf_probe_read_kernel(&e->filename, sizeof(e->filename), fname);
+    e->filename = name->name
 
     e->ret = ret;
 

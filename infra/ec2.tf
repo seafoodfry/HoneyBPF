@@ -1,4 +1,7 @@
-# ./run-cmd-in-shell.sh aws ec2 describe-images --region us-east-1 --owners amazon --filters "Name=name,Values=amazon-eks-node-al2023-arm64-standard*" "Name=creation-date,Values=2025-11-*" > machines.json
+# aws ec2 describe-images --region us-east-1 --owners amazon --filters "Name=name,Values=amazon-eks-node-al2023-arm64-standard*" "Name=creation-date,Values=2025-11-*" > machines.json
+#    - "ami-0bb01d9f69eb5fa9f"
+# aws ec2 describe-images --region us-east-1 --owners amazon --filters "Name=name,Values=amazon-eks-arm64*" "Name=creation-date,Values=2025-11-*" > machines.json
+#.   - "ami-0c8ec4a1ec55a09f1" 5.10 kernel, not BTF fn lvl data either
 data "aws_ami" "ami" {
   most_recent = true
   owners      = ["amazon"]
@@ -17,7 +20,7 @@ resource "aws_instance" "ec2" {
     }
   }
 
-  ami           = "ami-0bb01d9f69eb5fa9f" #data.aws_ami.ami.id
+  ami           = data.aws_ami.ami.id
   instance_type = "t4g.small"
   key_name      = var.ec2_key_pair
 
